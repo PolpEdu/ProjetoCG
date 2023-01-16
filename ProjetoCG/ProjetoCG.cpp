@@ -247,6 +247,8 @@ GLfloat skyDif[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat skySpec[]= { 1.0, 1.0, 1.0, 1.0 };
 GLint   skyCoef = 0.8 * 128;
 
+GLfloat transparentPlasticDif[] = { 0.5 ,0.5 ,0.5, 0.3 };
+
 GLboolean transparentmode = false;
 
 
@@ -305,7 +307,12 @@ void d_light_pole() {
 //========================================================= Helicopter
 void d_helicopter()
 {
-	
+	if (transparentmode) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, transparentPlasticDif);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, transparentPlasticDif);
+	}
 	glPushMatrix();
 	
 		glTranslatef(self_x, self_y, self_z);
@@ -329,6 +336,7 @@ void d_helicopter()
 		translate_window();
 
 	glPopMatrix();
+	glDisable(GL_BLEND);
 }
 
 void d_window() {
@@ -450,17 +458,8 @@ void d_legs()
 
 void d_tail()
 {
-	if (transparentmode) {
-		GLfloat transparentPlasticDif[] = { 0.5 ,0.5 ,0.5, 0.5 };
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, transparentPlasticDif);
-		glMaterialfv(GL_FRONT, GL_SPECULAR, transparentPlasticDif);
-	}
-	else {
-		initMaterials(8);
-	}
+	
+	initMaterials(8);
 	
 
 	glPushMatrix();
@@ -830,7 +829,6 @@ void initialize(void)
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	initLights();
-	initMaterials(9);
 }
 
 //======================================
