@@ -650,7 +650,7 @@ void d_sky() {
 void d_grass() {
 	
 	int				i, j;
-	float			med_dim = (float)dim / 2;
+	float			med_dim = (float)dim / xC;
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture[2]);
 	
@@ -659,9 +659,7 @@ void d_grass() {
 	glMaterialfv(GL_FRONT, GL_SPECULAR, grassSpec);
 
 	glPushMatrix();
-		glTranslatef(-xC, GROUND_LEVEL, xC);
-		glScalef(xC, 1, 1);
-		glScalef(1, 1, xC);
+		glTranslatef(-xC/2, GROUND_LEVEL, xC/2);
 		glRotatef(90, -1, 0, 0);
 		glNormal3f(0.0f, 1.0f, 0.0f);
 		glBegin(GL_QUADS);
