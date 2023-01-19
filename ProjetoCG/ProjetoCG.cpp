@@ -269,7 +269,7 @@ void d_light_pole();
 void d_sky();
 void fly_effect();
 
-void d_light_pole() {
+void d_light_pole(bool lightOn) {
 	GLfloat radius = 1;
 	GLfloat height = 35;
 	initMaterials(2);
@@ -294,10 +294,11 @@ void d_light_pole() {
 
 		glPushMatrix();
 			glDisable(GL_LIGHTING);
-			glColor3d(luzR, luzG, luzB);
+			if (lightOn)
+				glColor3d(luzR, luzG, luzB);
+			else
+				glColor3d(0.1, 0.1, 0.1);
 			glTranslatef(-8, 0, 0);
-			// get the current coords after translation
-			
 			gluSphere(quadric, radius * 1.10, 20, 20);
 			glEnable(GL_LIGHTING);
 		glPopMatrix();
@@ -614,13 +615,17 @@ void d_buildings() {
 			{
 				glPushMatrix();
 
-				glTranslatef(x, 0.0, z);
-				d_house();
-				glTranslatef(-x, 0.0, -z);
+					glTranslatef(x, 0.0, z);
+					d_house();
+					glTranslatef(-x, 0.0, -z);
 
-				glTranslatef(-x, 0.0, z);
-				d_house();
-				glTranslatef(x, 0.0, -z);
+					glTranslatef(-x, 0.0, z);
+					d_house();
+					glTranslatef(x, 0.0, -z);
+
+					glTranslatef(-x, 0.0, z);
+					d_light_pole(false);
+					glTranslatef(x, 0.0, -z);
 
 				glPopMatrix();
 			}
@@ -705,7 +710,7 @@ void updateLights(void) {
 		glEnable(GL_LIGHTING);
 	glPopMatrix();
 	
-	printf("%f %f %f\n", currentPosArr[0], currentPosArr[1], currentPosArr[2]);
+	//printf("%f %f %f\n", currentPosArr[0], currentPosArr[1], currentPosArr[2]);
 	glLightfv(GL_LIGHT1, GL_POSITION, currentPosArr); // in the helicopter
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, CorHeliDif);
 	glLightfv(GL_LIGHT1, GL_SPECULAR, CorHeliEsp);
@@ -834,7 +839,7 @@ void drawScene() {
 	d_grass();
 	d_helicopter();
 	d_buildings();
-	d_light_pole();
+	d_light_pole(true);
 	rotation_rotor();
 
 	//==================================== Animanacao do ceu, este precisa de se mover com o observador
@@ -867,10 +872,16 @@ void display(void) {
 	
 	glColor3f(1, 1, 1);
 	sprintf_s(texto, 30, "%d - Dia 'D'", Dia);
-	desenhaTexto(texto, -24, 1, -20);
+	desenhaTexto(texto, -24, 4, -20);
 	
 	sprintf_s(texto2, 30, "%d - Dim '+'/'-'", dim);
-	desenhaTexto(texto2, -24, -3, -20);
+	desenhaTexto(texto2, -24, 0, -20);
+
+	sprintf_s(texto, 30, "%d - Transparencia 'T'", transparentmode);
+	desenhaTexto(texto, -24, -4, -20);
+
+	sprintf_s(texto2, 30, "Material 'M'");
+	desenhaTexto(texto2, -24, -10, -20);
 	glEnable(GL_LIGHTING);
 	
 	//=================================================================
@@ -1028,7 +1039,7 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(wScreen, hScreen);
 	glutInitWindowPosition(400, 100);
-	glutCreateWindow("ProjetoCG - Eduardo Nunes || W: ++altitude, S: --altitude, Arrow keys: move helicopter (i,I,k,K,j,l camera) || Divisões Grela (+,-) || Dia/Night (D) || Material (M)");
+	glutCreateWindow("ProjetoCG - Eduardo Nunes || W: ++altitude, S: --altitude, Arrow keys: move helicopter (i,I,k,K,j,l camera) || Divisões Grela (+,-) || Dia/Night (D) || Material (M) || Transparencia (T)");
 
 	initialize();
 
