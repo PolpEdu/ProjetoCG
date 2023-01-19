@@ -5,27 +5,6 @@
 	ProjetoCG
 ======================================================================================= */
 
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-// Escolher:
-//	   - Qual é o veículo?
-//	   - Como é a geometria?
-//     - Quais são as animações?
-// 
-// A implementar pelos alunos Meta 1
-//     - Acabar a geometria -> Veiculo
-//     - Acabar a animação
-//			- Uma translação de um objeto especifico (e.g portas a abrir, corda a cair)
-//			- Uma rotação de elementos diferentes
-//     - Tentar fazer as cameras
-// 
-// 
-// I intent to draw a helicopter that moves in a space with the helicopter rotor rotating.
-// The helicopter will land and open a door at the end of the animation
-// 
-// The helicopter's body can be a sphere (?)
-//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -53,8 +32,9 @@ GLfloat		SKY_HEIGHT = 50;
 
 //=========================================================== Variaveis e constantes
 GLfloat		padRay = 15;
-char		texto[30];
-char		texto2[30];
+char		texto[50];
+char		texto2[50];
+char		texto3[100];
 GLint		msec = 50;	//.. tempo entre frames - milisegundos
 GLfloat		xC = 2500.0;  // tamanho chão
 GLint		vel = 5;		// vel de movimento
@@ -882,6 +862,9 @@ void display(void) {
 
 	sprintf_s(texto2, 30, "Material 'M'");
 	desenhaTexto(texto2, -24, -10, -20);
+
+	sprintf_s(texto3, 100, "Para ver luz do helicoptero, meter de noite e subir helicoptero.");
+	desenhaTexto(texto3, 120, -10, 30);
 	glEnable(GL_LIGHTING);
 	
 	//=================================================================
